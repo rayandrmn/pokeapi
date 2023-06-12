@@ -1,5 +1,8 @@
 import { Pokemon } from './team.js';
 import {compte} from './compteur.js';
+import { changeSprite } from './changeSprite.js';
+import {initializeApp} from './localstorage.js';
+
 
 export let firstpkm;
 export let evolutionurl;
@@ -37,9 +40,13 @@ export  async function  fetch_first_pkm() {
     const data = await response.json();
     console.log(data);
     const first_pkm_name = data.name;
-    document.getElementById('sprite').src = data.sprite;
+    
     firstpkm = new Pokemon(first_pkm_name, -54, 1, true, evolutionurl);
+    firstpkm.sprite = data.sprite;
+    changeSprite()
     document.addEventListener('click', compte);
+    initializeApp();
+
     console.log( firstpkm);
     
   } catch (error) {
@@ -88,6 +95,7 @@ export  async function  fetch_first_pkm() {
     }
     const data = await  response.json();
     firstpkm.evolutionName = data.chain.evolves_to[0].species.name;
+    console.log(data.chain.evolves_to[0]);
     firstpkm.evo_lvl = data.chain.evolves_to[0].evolution_details[0].min_level;
 
 
